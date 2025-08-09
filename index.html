@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изучение японских кандзи - Флэш-карты</title>
+    
+    <!-- CSS файлы -->
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/components.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Заголовок -->
+        <header class="header">
+            <h1>🈯 Изучение японских кандзи</h1>
+            <p>Интерактивные флэш-карты для изучения кандзи N3</p>
+        </header>
+
+        <!-- Навигация -->
+        <nav class="nav-buttons">
+            <button class="nav-btn active" onclick="showSection('flashcards')">Флэш-карты</button>
+            <button class="nav-btn" onclick="showSection('all-kanji')">Все кандзи</button>
+            <button class="nav-btn" onclick="showSection('all-words')">Все слова</button>
+            <button class="nav-btn" onclick="showSection('test')">Тест</button>
+        </nav>
+
+        <!-- Секция флэш-карт -->
+        <section id="flashcards" class="section active">
+            <div class="flashcard-container">
+                <!-- Прогресс -->
+                <div class="progress-container" style="width: 100%; max-width: 600px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span id="progress-info" style="font-weight: 600; color: #666;">1 / 69</span>
+                        <button onclick="app.showAbout()" style="background: none; border: none; cursor: pointer; color: #667eea; font-weight: 600;">ℹ️ О приложении</button>
+                    </div>
+                    <div style="background: #e9ecef; border-radius: 10px; height: 6px; overflow: hidden;">
+                        <div id="progress-bar" style="background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; width: 1.4%; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+
+                <!-- Флэш-карта -->
+                <div class="flashcard">
+                    <!-- Основной кандзи -->
+                    <div class="kanji-display" id="current-kanji">駐</div>
+                    
+                    <!-- Чтения кандзи (всегда видимые) -->
+                    <div class="kanji-readings-section">
+                        <h3>Чтения:</h3>
+                        <div id="kanji-readings">
+                            <!-- Будет заполнено JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Скрытая информация (показывается по кнопке) -->
+                    <div id="hidden-info" style="display: none;">
+                        <!-- Значение кандзи -->
+                        <div class="kanji-meaning-section">
+                            <h3>Значение:</h3>
+                            <div id="kanji-meaning">
+                                <!-- Будет заполнено JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Слова с этим кандзи -->
+                        <div class="kanji-words-section">
+                            <h3>Слова:</h3>
+                            <div id="kanji-words">
+                                <!-- Будет заполнено JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Примеры предложений -->
+                        <div class="kanji-examples-section">
+                            <h3>Примеры предложений:</h3>
+                            <div id="kanji-examples">
+                                <!-- Будет заполнено JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопки управления -->
+                <div class="flashcard-controls">
+                    <button id="prev-kanji" class="control-btn">← Предыдущий</button>
+                    <button id="show-meaning" class="control-btn">Показать перевод</button>
+                    <button id="next-kanji" class="control-btn">Следующий →</button>
+                    <button id="random-kanji" class="control-btn" style="background: #28a745;">🎲 Случайный</button>
+                </div>
+
+                <!-- Подсказки по клавишам -->
+                <div style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9rem;">
+                    <p>💡 <strong>Клавиши:</strong> ← → для навигации, Пробел для показа перевода, Ctrl+R для случайного кандзи</p>
+                    <p>📱 <strong>На мобильном:</strong> Свайп влево/вправо для переключения кандзи</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция всех кандзи -->
+        <section id="all-kanji" class="section">
+            <h2>Все кандзи (69 иероглифов)</h2>
+            
+            <!-- Фильтры по неделям и дням -->
+            <div class="kanji-filters">
+                <div class="filter-group">
+                    <label>Неделя:</label>
+                    <select id="week-filter">
+                        <option value="all">Все недели</option>
+                        <option value="1">Неделя 1 - でかける① (Выходим ①)</option>
+                        <option value="2">Неделя 2 - でかける② (Выходим ②)</option>
+                        <option value="3">Неделя 3</option>
+                        <option value="4">Неделя 4</option>
+                        <option value="5">Неделя 5</option>
+                        <option value="6">Неделя 6</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>День:</label>
+                    <select id="day-filter">
+                        <option value="all">Все дни</option>
+                        <option value="1">День 1</option>
+                        <option value="2">День 2</option>
+                        <option value="3">День 3</option>
+                        <option value="4">День 4</option>
+                        <option value="5">День 5</option>
+                        <option value="6">День 6</option>
+                        <option value="7">День 7</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Группировка кандзи по неделям и дням -->
+            <div id="kanji-grouped-content">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+        </section>
+
+        <!-- Секция всех слов -->
+        <section id="all-words" class="section">
+            <h2>Все слова с кандзи</h2>
+            <div id="words-list">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+        </section>
+
+        <!-- Секция теста -->
+        <section id="test" class="section">
+            <h2>Тест на знание кандзи</h2>
+            
+            <div class="test-container">
+                <!-- Настройки теста -->
+                <div id="test-settings" style="text-align: center; margin-bottom: 30px;">
+                    <p style="margin-bottom: 20px; color: #666;">Проверьте свои знания кандзи</p>
+                    <button class="control-btn" onclick="startTest()" style="font-size: 1.2rem; padding: 15px 30px;">
+                        🧠 Начать тест
+                    </button>
+                </div>
+
+                <!-- Вопрос теста -->
+                <div id="test-question" class="test-question" style="display: none;">
+                    <!-- Будет заполнено JavaScript -->
+                </div>
+
+                <!-- Результаты теста -->
+                <div id="test-results" class="test-result" style="display: none;">
+                    <!-- Будет заполнено JavaScript -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript файлы -->
+    <script src="./js/data/embedded-kanji.js"></script>
+    <script src="./js/utils/helpers.js"></script>
+    <script src="./js/utils/api.js"></script>
+    <script src="./js/components/navigation.js"></script>
+    <script src="./js/components/flashcards.js"></script>
+    <script src="./js/components/kanji-grid.js"></script>
+    <script src="./js/components/words-list.js"></script>
+    <script src="./js/components/test.js"></script>
+    <script src="./js/app.js"></script>
+
+    <!-- Временные функции для обратной совместимости -->
+    <script>
+        // Функции, которые будут реализованы в будущих компонентах
+
+        // startTest функция теперь обрабатывается в компоненте KanjiTest
+    </script>
+</body>
+</html>
