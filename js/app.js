@@ -1,3 +1,4 @@
+
 // Главный модуль приложения
 
 class KanjiApp {
@@ -51,16 +52,10 @@ class KanjiApp {
         // Инициализация флэш-карт
         this.flashcards = new Flashcards(this);
         
-        // Инициализация компонента кандзи-сетки
-        this.kanjiGrid = new KanjiGrid(this);
-        
-        // Инициализация компонента списка слов
-        this.wordsList = new WordsList(this);
-        
-        // Инициализация компонента теста
-        this.test = new KanjiTest(this);
-        
-        // Остальные компоненты будут добавлены позже
+        // Инициализация остальных компонентов будет добавлена позже
+        // this.kanjiGrid = new KanjiGrid(this);
+        // this.wordsList = new WordsList(this);
+        // this.test = new Test(this);
         // this.filters = new Filters(this);
         
         console.log('Все компоненты инициализированы');
