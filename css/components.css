@@ -121,9 +121,10 @@
 /* Кнопки управления */
 .flashcard-controls {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     justify-content: center;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .control-btn {
@@ -703,7 +704,7 @@
 /* Адаптивность для компонентов */
 @media (max-width: 768px) {
     .kanji-display {
-        font-size: 6rem;
+        font-size: 5rem;
     }
     
     .kanji-grid {
@@ -721,16 +722,21 @@
     
     .flashcard {
         padding: 20px;
-        min-height: 350px;
+        min-height: 300px;
     }
     
     .flashcard-controls {
-        gap: 15px;
+        gap: 10px;
+        flex-direction: column;
+        align-items: center;
     }
     
     .control-btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+        padding: 12px 24px;
+        font-size: 0.95rem;
+        min-height: 44px;
+        min-width: 200px;
+        touch-action: manipulation;
     }
     
     .test-kanji {
@@ -772,7 +778,7 @@
 
 @media (max-width: 480px) {
     .kanji-display {
-        font-size: 4rem;
+        font-size: 3.5rem;
     }
     
     .kanji-grid {
@@ -790,12 +796,22 @@
     
     .flashcard {
         padding: 15px;
-        min-height: 300px;
+        min-height: 280px;
     }
     
     .control-btn {
-        padding: 8px 16px;
-        font-size: 0.8rem;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        min-height: 48px;
+        width: 100%;
+        max-width: 300px;
+        touch-action: manipulation;
+    }
+    
+    .flashcard-controls {
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto 0;
     }
     
     .test-kanji {

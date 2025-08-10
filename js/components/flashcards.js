@@ -93,29 +93,95 @@ class Flashcards {
 
         let startX = 0;
         let startY = 0;
-        const threshold = 100; // Минимальное расстояние для срабатывания свайпа
+        let startTime = 0;
+        const threshold = 80; // Минимальное расстояние для срабатывания свайпа
+        const maxTime = 500; // Максимальное время для свайпа (мс)
+        const minVelocity = 0.3; // Минимальная скорость свайпа (пикселей/мс)
+
+        // Предотвращаем выделение текста при свайпе
+        flashcard.style.userSelect = 'none';
+        flashcard.style.webkitUserSelect = 'none';
 
         flashcard.addEventListener('touchstart', (e) => {
+            // Только для одного касания
+            if (e.touches.length !== 1) return;
+            
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
+            startTime = Date.now();
         }, { passive: true });
 
+        flashcard.addEventListener('touchmove', (e) => {
+            // Предотвращаем скролл при горизонтальном свайпе
+            if (e.touches.length !== 1) return;
+            
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const deltaX = Math.abs(currentX - startX);
+            const deltaY = Math.abs(currentY - startY);
+            
+            // Если горизонтальное движение преобладает, предотвращаем скролл
+            if (deltaX > deltaY && deltaX > 20) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
         flashcard.addEventListener('touchend', (e) => {
+            if (e.changedTouches.length !== 1) return;
+            
             const endX = e.changedTouches[0].clientX;
             const endY = e.changedTouches[0].clientY;
+            const endTime = Date.now();
             
             const deltaX = endX - startX;
             const deltaY = endY - startY;
+            const deltaTime = endTime - startTime;
+            const velocity = Math.abs(deltaX) / deltaTime;
             
-            // Проверяем, что горизонтальное движение больше вертикального
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
-                if (deltaX > 0) {
-                    // Свайп вправо - предыдущий кандзи
-                    this.previousKanji();
-                } else {
-                    // Свайп влево - следующий кандзи
-                    this.nextKanji();
-                }
+            // Проверяем условия для свайпа:
+            // 1. Горизонтальное движение больше вертикального
+            // 2. Пройдено минимальное расстояние
+            // 3. Время свайпа не превышает максимальное
+            // 4. Скорость свайпа достаточна
+            const isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY);
+            const isDistanceEnough = Math.abs(deltaX) > threshold;
+            const isTimeValid = deltaTime < maxTime;
+            const isVelocityEnough = velocity > minVelocity;
+            
+            if (isHorizontalSwipe && isDistanceEnough && (isTimeValid || isVelocityEnough)) {
+                // Добавляем небольшую задержку для лучшего UX
+                setTimeout(() => {
+                    if (deltaX > 0) {
+                        // Свайп вправо - предыдущий кандзи
+                        this.previousKanji();
+                    } else {
+                        // Свайп влево - следующий кандзи
+                        this.nextKanji();
+                    }
+                }, 50);
+            }
+        }, { passive: true });
+
+        // Добавляем тап для показа/скрытия перевода на мобильных
+        let tapCount = 0;
+        flashcard.addEventListener('touchend', (e) => {
+            if (e.changedTouches.length !== 1) return;
+            
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const deltaX = Math.abs(endX - startX);
+            const deltaY = Math.abs(endY - startY);
+            
+            // Если это не свайп, а тап
+            if (deltaX < 20 && deltaY < 20) {
+                tapCount++;
+                setTimeout(() => {
+                    if (tapCount === 1) {
+                        // Одинарный тап - показать/скрыть перевод
+                        this.toggleHiddenInfo();
+                    }
+                    tapCount = 0;
+                }, 300);
             }
         }, { passive: true });
     }
